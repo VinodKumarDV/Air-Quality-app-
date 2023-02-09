@@ -8,12 +8,12 @@ export const Form = () => {
     const [value, setValue] = useState();
     const [inpvalue, setInpValue] = useState();
     const [data, setData] = useState();
+    const [date, setDate] = useState();
 
     const baseUrl = 'https://api.openweathermap.org/data/2.5/air_pollution';
     const apiKey = 'b9fd81042ae048bc2e5a4b72d0e66e54';
     const base = "https://api.openweathermap.org/data/2.5/";
 
-    var date 
     function dateBuilder(d) {
         let months = [
             "January", "February", "March", "April", "May", "June", "July", "August", "September",
@@ -40,6 +40,7 @@ export const Form = () => {
                 );
                 const json = await response.json();
                 setWeatherData(json)
+                setDate(dateBuilder(new Date()))
             } catch (err) {
                 alert('Enter More Precise Location');
                 window.location.reload(false)
@@ -58,7 +59,6 @@ export const Form = () => {
                 );
                 const json = await response.json();
                 setData(json.list[0].components)
-                date = dateBuilder(new Date())
             } catch (err) {
                 alert('Enter More Precise Location');
                 window.location.reload(false)
@@ -77,7 +77,7 @@ export const Form = () => {
 
     return (
         <div>
-            <video autoPlay loop id="vid">
+            <video autoPlay loop muted id="vid">
                 <source src="/assets\globdarkandlight.mp4" type ="video/mp4"/>
             </video>
             <div class="app-wrap">
@@ -86,7 +86,7 @@ export const Form = () => {
                     <input type="text" onChange={(e) => {setInpValue(e.target.value)}} value={inpvalue} onKeyDown={handleKeyDown} placeholder="Enter a Location..." class="search" id="search-box" />
                 </header>
                 <div class="location">
-                    <div class="city">{weatherData? <>{weatherData.name}</> : <>Enter a Location</>}</div>
+                    <div class="city">{weatherData ? <>{weatherData.name}, {weatherData.sys.country}</> : <>Enter a Location</>}</div>
                     <div class="date">{date? <>{date}</> : <>Current Date</>}</div>
                 </div>
                 <div class="coordinates">
